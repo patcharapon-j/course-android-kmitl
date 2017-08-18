@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context="com.noxstudio.patcharaponjoksamut.day_02.MainActivity">
 
+    <view
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="#0000ff"
+        android:layout_margin="8dp"
+        android:id="@+id/mainView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -15,7 +26,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mainView"
         app:layout_constraintVertical_bias="0.502" />
 
     <TextView

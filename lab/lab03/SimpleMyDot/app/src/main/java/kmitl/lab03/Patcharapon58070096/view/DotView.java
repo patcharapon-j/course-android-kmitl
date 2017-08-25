@@ -8,12 +8,15 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import kmitl.lab03.Patcharapon58070096.model.Dot;
 
 public class DotView extends View {
 
     private Paint paint;
-    private Dot dot;
+    private ArrayList<Dot> allDots;
 
     public DotView(Context context) {
         super(context);
@@ -33,17 +36,23 @@ public class DotView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(dot != null) {
-            paint.setColor(Color.RED);
-            canvas.drawCircle(
-                    dot.getCenterX(),
-                    dot.getCenterY(),
-                    dot.getRadius(),
-                    paint);
+
+        if(allDots != null) {
+            Iterator<Dot> iter = allDots.iterator();
+            while (iter.hasNext()) {
+                Dot dot = iter.next();
+                paint.setColor(Color.RED);
+                canvas.drawCircle(
+                        dot.getCenterX(),
+                        dot.getCenterY(),
+                        dot.getRadius(),
+                        paint);
+            }
         }
+
     }
 
-    public void setDot(Dot dot) {
-        this.dot = dot;
+    public void setDot(ArrayList<Dot> allDots) {
+        this.allDots = allDots;
     }
 }

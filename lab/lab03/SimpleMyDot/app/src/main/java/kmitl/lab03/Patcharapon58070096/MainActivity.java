@@ -64,10 +64,12 @@ public class MainActivity extends AppCompatActivity implements Dot.DotChangedLis
             int x = (int)event.getX();
             int y = (int)event.getY();
 
-            Toast.makeText(this.getApplicationContext(), "X:" + x + " Y:"+ y, Toast.LENGTH_SHORT).show();
+            int location[] = new int[2];
+            dotView.getLocationOnScreen(location);
+
+            y -= location[1];
 
             Dot resultDot = checkForDotTouched(x, y);
-            System.out.print(resultDot);
 
             if(resultDot != null) {
                 allDots.remove(resultDot);
@@ -84,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements Dot.DotChangedLis
 
                 allDots.add(dot);
             }
+
+            dotView.invalidate();
 
         }
 

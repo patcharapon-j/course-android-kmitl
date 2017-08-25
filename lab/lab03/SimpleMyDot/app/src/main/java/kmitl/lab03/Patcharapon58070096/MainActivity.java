@@ -11,36 +11,36 @@ import android.widget.Toast;
 import java.util.Random;
 
 import kmitl.lab03.Patcharapon58070096.model.Dot;
+import kmitl.lab03.Patcharapon58070096.view.DotView;
 
 public class MainActivity extends AppCompatActivity implements Dot.DotChangedListener {
+
+    private DotView dotView;
+    private Dot dot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
+        dot = new Dot(0, 0, 20);
+        dot.setDotChangedListener(this);
+        dotView = (DotView) findViewById(R.id.dotView);
+    }
 
     public void onRandomDotClicked(View view) {
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        int screenWidth = displayMetrics.widthPixels;
-        int screenHeight = displayMetrics.heightPixels;
-
         Random random = new Random();
-        int centerX = random.nextInt(screenWidth);
-        int centerY = random.nextInt(screenHeight);
+        int centerX = random.nextInt(this.dotView.getWidth());
+        int centerY = random.nextInt(this.dotView.getHeight());
 
-        Dot dot = new Dot(centerX, centerY, 10, this);
+        dot.setCenterX(centerX);
+        dot.setCenterY(centerY);
     }
 
     @Override
     public void onDotChanged(Dot dot) {
-        String posLabelString = "X: " + dot.getCenterX() + "\nY: " + dot.getCenterY();
-
-        TextView posLabel = (TextView)findViewById(R.id.posLabel);
-        posLabel.setText(posLabelString);
+        dotView.setDot(dot);
+        dotView.invalidate();
     }
 }

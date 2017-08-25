@@ -1,5 +1,6 @@
 package kmitl.lab03.Patcharapon58070096;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -34,8 +35,13 @@ public class MainActivity extends AppCompatActivity implements Dot.DotChangedLis
         Random random = new Random();
         int centerX = random.nextInt(this.dotView.getWidth());
         int centerY = random.nextInt(this.dotView.getHeight());
+        int size = random.nextInt(90) + 10;
 
-        Dot dot = new Dot(centerX, centerY, 50, this);
+        Dot dot = new Dot(centerX, centerY, size, this);
+        dot.setColor_r(random.nextInt(255));
+        dot.setColor_g(random.nextInt(255));
+        dot.setColor_b(random.nextInt(255));
+
         allDots.add(dot);
     }
 

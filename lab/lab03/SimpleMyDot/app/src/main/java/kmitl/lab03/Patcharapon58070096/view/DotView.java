@@ -39,9 +39,8 @@ public class DotView extends View {
 
         if(allDots != null) {
             Iterator<Dot> iter = allDots.iterator();
-            while (iter.hasNext()) {
-                Dot dot = iter.next();
-                paint.setColor(Color.RED);
+            for(Dot dot: allDots){
+                paint.setARGB(255, dot.getColor_r(), dot.getColor_g(), dot.getColor_b());
                 canvas.drawCircle(
                         dot.getCenterX(),
                         dot.getCenterY(),

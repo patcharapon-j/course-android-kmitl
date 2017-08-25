@@ -10,7 +10,9 @@ import android.widget.Toast;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+import kmitl.lab03.Patcharapon58070096.model.Dot;
+
+public class MainActivity extends AppCompatActivity implements Dot.DotChangedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +33,14 @@ public class MainActivity extends AppCompatActivity {
         int centerX = random.nextInt(screenWidth);
         int centerY = random.nextInt(screenHeight);
 
-        String posLabelString = "X: " + centerX + "\nY: " + centerY;
+        Dot dot = new Dot(centerX, centerY, 10, this);
+    }
+
+    @Override
+    public void onDotChanged(Dot dot) {
+        String posLabelString = "X: " + dot.getCenterX() + "\nY: " + dot.getCenterY();
 
         TextView posLabel = (TextView)findViewById(R.id.posLabel);
         posLabel.setText(posLabelString);
-
     }
 }

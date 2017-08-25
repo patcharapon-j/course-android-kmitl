@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,4 +56,59 @@ public class MainActivity extends AppCompatActivity implements Dot.DotChangedLis
         allDots.clear();
         dotView.invalidate();
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            int x = (int)event.getX();
+            int y = (int)event.getY();
+
+            Toast.makeText(this.getApplicationContext(), "X:" + x + " Y:"+ y, Toast.LENGTH_SHORT).show();
+
+            Dot resultDot = checkForDotTouched(x, y);
+            System.out.print(resultDot);
+
+            if(resultDot != null) {
+                allDots.remove(resultDot);
+            } else {
+                Random random = new Random();
+                int centerX = x;
+                int centerY = y;
+                int size = random.nextInt(90) + 10;
+
+                Dot dot = new Dot(centerX, centerY, size, this);
+                dot.setColor_r(random.nextInt(255));
+                dot.setColor_g(random.nextInt(255));
+                dot.setColor_b(random.nextInt(255));
+
+                allDots.add(dot);
+            }
+
+        }
+
+        return super.onTouchEvent(event);
+    }
+
+    private Dot checkForDotTouched(int x, int y) {
+
+        for(Dot dot: allDots) {
+            if (isInRange(dot, x, y)) {
+                return dot;
+            }
+        }
+        return null;
+
+    }
+
+    private boolean isInRange(Dot dot, int x, int y) {
+        double distance = Math.pow(Math.pow((dot.getCenterX() - x), 2) + Math.pow((dot.getCenterY() - y), 2), 0.5);
+        if(distance <= dot.getRadius()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 }

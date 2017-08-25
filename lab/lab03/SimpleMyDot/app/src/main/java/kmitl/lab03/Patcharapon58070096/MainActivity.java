@@ -44,4 +44,9 @@ public class MainActivity extends AppCompatActivity implements Dot.DotChangedLis
         dotView.setDot(allDots);
         dotView.invalidate();
     }
+
+    public void onClearClicked(View view) {
+        allDots.clear();
+        dotView.invalidate();
+    }
 }

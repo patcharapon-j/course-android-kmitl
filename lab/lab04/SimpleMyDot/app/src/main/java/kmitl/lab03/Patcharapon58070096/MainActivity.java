@@ -1,34 +1,32 @@
 package kmitl.lab03.Patcharapon58070096;
 
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 import java.util.Random;
 
 import kmitl.lab03.Patcharapon58070096.model.Dot;
+import kmitl.lab03.Patcharapon58070096.model.DotColor;
+import kmitl.lab03.Patcharapon58070096.model.Dots;
 import kmitl.lab03.Patcharapon58070096.view.DotView;
 
-public class MainActivity extends AppCompatActivity implements Dot.DotChangedListener {
+public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeListener, DotView.OnDotViewTouchedListener {
 
     private DotView dotView;
-    private ArrayList<Dot> allDots;
+    private Dots dots;
+    private DotColor dotColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        allDots = new ArrayList<>();
-
+        dots = new Dots();
+        dots.setListener(this);
         setContentView(R.layout.activity_main);
         dotView = (DotView) findViewById(R.id.dotView);
+        dotView.setListener(this);
+        dotColor = new DotColor();
     }
 
     public void onRandomDotClicked(View view) {
@@ -38,71 +36,42 @@ public class MainActivity extends AppCompatActivity implements Dot.DotChangedLis
         int centerY = random.nextInt(this.dotView.getHeight());
         int size = random.nextInt(90) + 10;
 
-        Dot dot = new Dot(centerX, centerY, size, this);
-        dot.setColor_r(random.nextInt(255));
-        dot.setColor_g(random.nextInt(255));
-        dot.setColor_b(random.nextInt(255));
-
-        allDots.add(dot);
-    }
-
-    @Override
-    public void onDotChanged(Dot dot) {
-        dotView.setDot(allDots);
-        dotView.invalidate();
+        Dot newDot = new Dot(centerX, centerY, size, dotColor.getRandomColor());
+        this.dots.addDot(newDot);
     }
 
     public void onClearClicked(View view) {
-        allDots.clear();
+        dots.clearDot();
+    }
+
+    @Override
+    public void onDotsChanged(Dots dots) {
+        dotView.setDots(dots);
         dotView.invalidate();
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public void onDotViewTouched(int x, int y) {
+        if(checkForDotTouched(x, y) == null) {
+            Random random = new Random();
+            int size = random.nextInt(90) + 10;
 
-        if(event.getAction() == MotionEvent.ACTION_UP) {
-            int x = (int)event.getX();
-            int y = (int)event.getY();
-
-            int location[] = new int[2];
-            dotView.getLocationOnScreen(location);
-
-            y -= location[1];
-
-            Dot resultDot = checkForDotTouched(x, y);
-
-            if(resultDot != null) {
-                allDots.remove(resultDot);
-            } else {
-                Random random = new Random();
-                int centerX = x;
-                int centerY = y;
-                int size = random.nextInt(90) + 10;
-
-                Dot dot = new Dot(centerX, centerY, size, this);
-                dot.setColor_r(random.nextInt(255));
-                dot.setColor_g(random.nextInt(255));
-                dot.setColor_b(random.nextInt(255));
-
-                allDots.add(dot);
-            }
-
-            dotView.invalidate();
-
+            Dot newDot = new Dot(x, y, size, dotColor.getRandomColor());
+            this.dots.addDot(newDot);
+        } else {
+            Dot selectedDot = checkForDotTouched(x, y);
+            dots.removeDot(selectedDot);
         }
-
-        return super.onTouchEvent(event);
     }
 
     private Dot checkForDotTouched(int x, int y) {
 
-        for(Dot dot: allDots) {
+        for(Dot dot: this.dots.getAllDots()) {
             if (isInRange(dot, x, y)) {
                 return dot;
             }
         }
         return null;
-
     }
 
     private boolean isInRange(Dot dot, int x, int y) {
@@ -113,6 +82,4 @@ public class MainActivity extends AppCompatActivity implements Dot.DotChangedLis
             return false;
         }
     }
-
-
 }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
         setContentView(R.layout.activity_main);
         dotView = (DotView) findViewById(R.id.dotView);
         dotView.setListener(this);
+        dotView.setBackgroundColor(Color.WHITE);
         dotColor = new DotColor();
     }
 
@@ -103,9 +106,17 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
         this.attemptShare();
     }
 
+    private Bitmap getScreenshot() {
+        View root = this.dotView.getRootView();
+        Bitmap screenshot = Bitmap.createBitmap(root.getWidth(), root.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(screenshot);
+        root.draw(canvas);
+        return screenshot;
+    }
+
     private void attemptShare() {
         if(requestExternalStoragePermission()) {
-            Bitmap screenshot = this.dotView.getScreenshot();
+            Bitmap screenshot = this.getScreenshot();
             Uri screenshotUri = getImageUri(this.getApplicationContext(), screenshot);
             presentShareScreen(screenshotUri);
         }
@@ -120,10 +131,11 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
     }
 
     private void presentShareScreen(Uri uri) {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        startActivity(Intent.createChooser(sendIntent, "Share Dot Screenshot"));
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.setType("image/*");
+        startActivity(Intent.createChooser(intent, "Share Dot Screenshot"));
     }
 
     private boolean requestExternalStoragePermission() {

@@ -50,13 +50,6 @@ public class DotView extends View {
         paint = new Paint();
     }
 
-    public Bitmap getScreenshot() {
-        Bitmap screenshot = Bitmap.createBitmap(this.getWidth(), this.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(screenshot);
-        this.draw(canvas);
-        return screenshot;
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

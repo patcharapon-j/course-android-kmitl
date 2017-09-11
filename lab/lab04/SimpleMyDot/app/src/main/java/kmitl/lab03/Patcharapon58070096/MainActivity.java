@@ -82,4 +82,11 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
             return false;
         }
     }
+
+    public void onUndoClicked(View view) {
+        dots.undoDot();
+    }
+
+    public void onShareClicked(View view) {
+    }
 }

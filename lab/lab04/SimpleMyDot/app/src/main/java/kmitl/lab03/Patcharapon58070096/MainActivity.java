@@ -1,9 +1,21 @@
 package kmitl.lab03.Patcharapon58070096;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.io.ByteArrayOutputStream;
 import java.util.Random;
 
 import kmitl.lab03.Patcharapon58070096.model.Dot;
@@ -88,5 +100,57 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
     }
 
     public void onShareClicked(View view) {
+        this.attemptShare();
+    }
+
+    private void attemptShare() {
+        if(requestExternalStoragePermission()) {
+            Bitmap screenshot = this.dotView.getScreenshot();
+            Uri screenshotUri = getImageUri(this.getApplicationContext(), screenshot);
+            presentShareScreen(screenshotUri);
+        }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    private void presentShareScreen(Uri uri) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(Intent.createChooser(sendIntent, "Share Dot Screenshot"));
+    }
+
+    private boolean requestExternalStoragePermission() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        100);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case 100: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.attemptShare();
+                }
+                return;
+            }
+        }
     }
 }

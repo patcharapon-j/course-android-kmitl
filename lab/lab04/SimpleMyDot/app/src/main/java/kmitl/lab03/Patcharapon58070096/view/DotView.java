@@ -1,6 +1,7 @@
 package kmitl.lab03.Patcharapon58070096.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -47,6 +48,13 @@ public class DotView extends View {
     public DotView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         paint = new Paint();
+    }
+
+    public Bitmap getScreenshot() {
+        Bitmap screenshot = Bitmap.createBitmap(this.getWidth(), this.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(screenshot);
+        this.draw(canvas);
+        return screenshot;
     }
 
     @Override

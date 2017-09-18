@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DotFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <kmitl.lab03.Patcharapon58070096.view.DotView
+        android:id="@+id/dotView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>

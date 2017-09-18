@@ -25,7 +25,7 @@ import kmitl.lab03.Patcharapon58070096.model.DotColor;
 import kmitl.lab03.Patcharapon58070096.model.Dots;
 import kmitl.lab03.Patcharapon58070096.view.DotView;
 
-public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeListener, DotView.OnDotViewTouchedListener {
+public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeListener, DotView.OnDotViewTouchedListener, DotFragment.OnFragmentInteractionListener {
 
     private DotView dotView;
     private Dots dots;
@@ -164,5 +164,10 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
                 return;
             }
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

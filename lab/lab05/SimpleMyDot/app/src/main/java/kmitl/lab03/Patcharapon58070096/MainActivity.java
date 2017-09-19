@@ -82,7 +82,8 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
 
     @Override
     public void onDotViewLongTouched(int x, int y) {
-        Toast.makeText(this, "Long Press Registered", Toast.LENGTH_SHORT).show();
+        EditFragment editFragment = new EditFragment();
+        editFragment.show(getFragmentManager(), "editFragment");
     }
 
     private Dot checkForDotTouched(int x, int y) {

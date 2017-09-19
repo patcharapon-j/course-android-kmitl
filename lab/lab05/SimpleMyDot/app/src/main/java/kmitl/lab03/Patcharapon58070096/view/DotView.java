@@ -1,26 +1,32 @@
 package kmitl.lab03.Patcharapon58070096.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import kmitl.lab03.Patcharapon58070096.model.Dot;
 import kmitl.lab03.Patcharapon58070096.model.Dots;
 
-public class DotView extends View {
+public class DotView extends View implements View.OnLongClickListener{
+
+    private boolean isLongPressed = false;
+    private int touchxBuffer;
+    private int touchyBuffer;
+
+    @Override
+    public boolean onLongClick(View view) {
+        isLongPressed = true;
+        this.listener.onDotViewLongTouched(touchxBuffer, touchyBuffer);
+        return false;
+    }
 
     public interface OnDotViewTouchedListener {
         void onDotViewTouched(int x, int y);
+        void onDotViewLongTouched(int x, int y);
     }
 
     private Paint paint;
@@ -38,16 +44,19 @@ public class DotView extends View {
     public DotView(Context context) {
         super(context);
         paint = new Paint();
+        this.setOnLongClickListener(this);
     }
 
     public DotView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         paint = new Paint();
+        this.setOnLongClickListener(this);
     }
 
     public DotView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         paint = new Paint();
+        this.setOnLongClickListener(this);
     }
 
     @Override
@@ -70,12 +79,19 @@ public class DotView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
+            case MotionEvent.ACTION_UP:
+                if(!isLongPressed) {
+                    this.listener.onDotViewTouched(
+                            (int)event.getX(),
+                            (int)event.getY());
+                }
+                break;
             case MotionEvent.ACTION_DOWN:
-                this.listener.onDotViewTouched(
-                        (int)event.getX(),
-                        (int)event.getY());
-                return true;
+                touchxBuffer = (int)event.getX();
+                touchyBuffer = (int)event.getY();
+                break;
         }
+        isLongPressed = false;
         return super.onTouchEvent(event);
     }
 }

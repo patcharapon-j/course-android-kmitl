@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Random;
@@ -77,6 +78,11 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
             Dot selectedDot = checkForDotTouched(x, y);
             dots.removeDot(selectedDot);
         }
+    }
+
+    @Override
+    public void onDotViewLongTouched(int x, int y) {
+        Toast.makeText(this, "Long Press Registered", Toast.LENGTH_SHORT).show();
     }
 
     private Dot checkForDotTouched(int x, int y) {

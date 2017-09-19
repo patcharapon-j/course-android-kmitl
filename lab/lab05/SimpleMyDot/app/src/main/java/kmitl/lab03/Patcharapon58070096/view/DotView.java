@@ -2,6 +2,7 @@ package kmitl.lab03.Patcharapon58070096.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -65,7 +66,11 @@ public class DotView extends View implements View.OnLongClickListener{
 
         if(this.dots != null) {
             for(Dot dot: this.dots.getAllDots()){
-                paint.setColor(dot.getColor());
+                if(dot.isCustomColorEnabled()) {
+                    paint.setColor(Color.rgb(dot.getColor_r(), dot.getColor_g(), dot.getColor_b()));
+                } else {
+                    paint.setColor(dot.getColor());
+                }
                 canvas.drawCircle(
                         dot.getCenterX(),
                         dot.getCenterY(),

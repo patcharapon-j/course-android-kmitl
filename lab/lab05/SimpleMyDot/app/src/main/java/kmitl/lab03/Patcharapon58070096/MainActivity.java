@@ -16,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -82,8 +84,19 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
 
     @Override
     public void onDotViewLongTouched(int x, int y) {
-        EditFragment editFragment = new EditFragment();
-        editFragment.show(getFragmentManager(), "editFragment");
+
+        Dot selectedDot = checkForDotTouched(x, y);
+        if(selectedDot != null) {
+            EditFragment editFragment = new EditFragment();
+
+            editFragment.show(getFragmentManager(), "editFragment");
+            editFragment.setMaxX(dotView.getWidth());
+            editFragment.setMaxY(dotView.getHeight());
+            editFragment.setDotX(selectedDot.getCenterX());
+            editFragment.setDoty(selectedDot.getCenterY());
+            editFragment.setDotRadius(selectedDot.getRadius());
+        }
+
     }
 
     private Dot checkForDotTouched(int x, int y) {

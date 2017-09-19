@@ -19,17 +19,16 @@ public class EditFragment extends DialogFragment implements SeekBar.OnSeekBarCha
     private int dotRadius;
     private int maxX;
     private int maxY;
-    SeekBar seekBar_x;
-    SeekBar seekBar_y;
-    SeekBar seekBar_radius;
-    TextView label_x;
-    TextView label_y;
-    TextView label_radius;
+    private SeekBar seekBar_x;
+    private SeekBar seekBar_y;
+    private SeekBar seekBar_radius;
+    private TextView label_x;
+    private TextView label_y;
+    private TextView label_radius;
+    private OnEditDotComfirmedListener onEditDotComfirmedListener;
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+    interface OnEditDotComfirmedListener {
+        void onDotEditConfirmed(int x, int y, int radius);
     }
 
     @Override
@@ -68,7 +67,7 @@ public class EditFragment extends DialogFragment implements SeekBar.OnSeekBarCha
                 .setView(view)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
+                        onEditDotComfirmedListener.onDotEditConfirmed(dotX, doty, dotRadius);
                     }
                 })
 
@@ -137,7 +136,7 @@ public class EditFragment extends DialogFragment implements SeekBar.OnSeekBarCha
                 break;
             case R.id.edit_x_seekbar:
                 dotX = seekBar.getProgress();
-                label_radius.setText(String.valueOf(dotX));
+                label_x.setText(String.valueOf(dotX));
                 break;
             case R.id.ediy_y_seekbar:
                 doty = seekBar.getProgress();
@@ -154,5 +153,13 @@ public class EditFragment extends DialogFragment implements SeekBar.OnSeekBarCha
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    public OnEditDotComfirmedListener getOnEditDotComfirmedListener() {
+        return onEditDotComfirmedListener;
+    }
+
+    public void setOnEditDotComfirmedListener(OnEditDotComfirmedListener onEditDotComfirmedListener) {
+        this.onEditDotComfirmedListener = onEditDotComfirmedListener;
     }
 }

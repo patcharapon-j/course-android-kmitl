@@ -28,11 +28,12 @@ import kmitl.lab03.Patcharapon58070096.model.DotColor;
 import kmitl.lab03.Patcharapon58070096.model.Dots;
 import kmitl.lab03.Patcharapon58070096.view.DotView;
 
-public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeListener, DotView.OnDotViewTouchedListener, DotFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeListener, DotView.OnDotViewTouchedListener, DotFragment.OnFragmentInteractionListener, EditFragment.OnEditDotComfirmedListener {
 
     private DotView dotView;
     private Dots dots;
     private DotColor dotColor;
+    private Dot editingDot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,16 +86,19 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
     @Override
     public void onDotViewLongTouched(int x, int y) {
 
-        Dot selectedDot = checkForDotTouched(x, y);
-        if(selectedDot != null) {
+        editingDot = checkForDotTouched(x, y);
+
+        if(editingDot != null) {
             EditFragment editFragment = new EditFragment();
 
-            editFragment.show(getFragmentManager(), "editFragment");
             editFragment.setMaxX(dotView.getWidth());
             editFragment.setMaxY(dotView.getHeight());
-            editFragment.setDotX(selectedDot.getCenterX());
-            editFragment.setDoty(selectedDot.getCenterY());
-            editFragment.setDotRadius(selectedDot.getRadius());
+            editFragment.setDotX(editingDot.getCenterX());
+            editFragment.setDoty(editingDot.getCenterY());
+            editFragment.setDotRadius(editingDot.getRadius());
+            editFragment.setOnEditDotComfirmedListener(this);
+
+            editFragment.show(getFragmentManager(), "editFragment");
         }
 
     }
@@ -189,5 +193,14 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onDotEditConfirmed(int x, int y, int radius) {
+        editingDot.setCenterX(x);
+        editingDot.setCenterY(y);
+        editingDot.setRadius(radius);
+
+        dotView.invalidate();
     }
 }

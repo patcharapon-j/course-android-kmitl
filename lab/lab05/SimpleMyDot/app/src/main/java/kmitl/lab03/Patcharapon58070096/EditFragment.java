@@ -8,14 +8,20 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class EditFragment extends DialogFragment implements SeekBar.OnSeekBarChangeListener{
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+
+public class EditFragment extends DialogFragment implements SeekBar.OnSeekBarChangeListener, View.OnClickListener{
 
     private int dotX;
     private int doty;
-    private Color dotColor;
+    private int dotColor;
     private int dotRadius;
     private int maxX;
     private int maxY;
@@ -26,9 +32,12 @@ public class EditFragment extends DialogFragment implements SeekBar.OnSeekBarCha
     private TextView label_y;
     private TextView label_radius;
     private OnEditDotComfirmedListener onEditDotComfirmedListener;
+    private Button editColorBtn;
+    private Button editColorDisplayBtn;
+
 
     interface OnEditDotComfirmedListener {
-        void onDotEditConfirmed(int x, int y, int radius);
+        void onDotEditConfirmed(int x, int y, int radius, int color);
     }
 
     @Override
@@ -43,6 +52,8 @@ public class EditFragment extends DialogFragment implements SeekBar.OnSeekBarCha
         label_x = view.findViewById(R.id.edit_x_label);
         label_y = view.findViewById(R.id.edit_y_label);
         label_radius = view.findViewById(R.id.edit_radius_label);
+        editColorBtn = view.findViewById(R.id.edit_changecolor_btn);
+        editColorDisplayBtn = view.findViewById(R.id.edit_colorbtn);
 
         seekBar_x.setMax(maxX);
         seekBar_x.setProgress(dotX);
@@ -53,6 +64,9 @@ public class EditFragment extends DialogFragment implements SeekBar.OnSeekBarCha
         label_x.setText(String.valueOf(dotX));
         label_y.setText(String.valueOf(doty));
         label_radius.setText(String.valueOf(dotRadius));
+        editColorDisplayBtn.setBackgroundColor(dotColor);
+
+        editColorBtn.setOnClickListener(this);
 
         seekBar_x.setOnSeekBarChangeListener(this);
         seekBar_y.setOnSeekBarChangeListener(this);
@@ -67,7 +81,7 @@ public class EditFragment extends DialogFragment implements SeekBar.OnSeekBarCha
                 .setView(view)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        onEditDotComfirmedListener.onDotEditConfirmed(dotX, doty, dotRadius);
+                        onEditDotComfirmedListener.onDotEditConfirmed(dotX, doty, dotRadius, dotColor);
                     }
                 })
 
@@ -76,6 +90,36 @@ public class EditFragment extends DialogFragment implements SeekBar.OnSeekBarCha
 
                     }
                 }).create();
+    }
+
+    @Override
+    public void onClick(View view) {
+        ColorPickerDialogBuilder
+                .with(view.getContext())
+                .setTitle("Choose color")
+                .initialColor(dotColor)
+                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                .density(12)
+                .setOnColorSelectedListener(new OnColorSelectedListener() {
+                    @Override
+                    public void onColorSelected(int selectedColor) {
+
+                    }
+                })
+                .setPositiveButton("Confirm", new ColorPickerClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                        dotColor = selectedColor;
+                        editColorDisplayBtn.setBackgroundColor(dotColor);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .build()
+                .show();
     }
 
     public int getDotX() {
@@ -95,11 +139,11 @@ public class EditFragment extends DialogFragment implements SeekBar.OnSeekBarCha
 
     }
 
-    public Color getDotColor() {
+    public int getDotColor() {
         return dotColor;
     }
 
-    public void setDotColor(Color dotColor) {
+    public void setDotColor(int dotColor) {
         this.dotColor = dotColor;
     }
 

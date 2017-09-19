@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
             editFragment.setDotX(editingDot.getCenterX());
             editFragment.setDoty(editingDot.getCenterY());
             editFragment.setDotRadius(editingDot.getRadius());
+            editFragment.setDotColor(editingDot.getColor());
             editFragment.setOnEditDotComfirmedListener(this);
 
             editFragment.show(getFragmentManager(), "editFragment");
@@ -196,10 +197,11 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotChangeL
     }
 
     @Override
-    public void onDotEditConfirmed(int x, int y, int radius) {
+    public void onDotEditConfirmed(int x, int y, int radius, int color) {
         editingDot.setCenterX(x);
         editingDot.setCenterY(y);
         editingDot.setRadius(radius);
+        editingDot.setColor(color);
 
         dotView.invalidate();
     }

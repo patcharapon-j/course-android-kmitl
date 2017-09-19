@@ -66,11 +66,7 @@ public class DotView extends View implements View.OnLongClickListener{
 
         if(this.dots != null) {
             for(Dot dot: this.dots.getAllDots()){
-                if(dot.isCustomColorEnabled()) {
-                    paint.setColor(Color.rgb(dot.getColor_r(), dot.getColor_g(), dot.getColor_b()));
-                } else {
-                    paint.setColor(dot.getColor());
-                }
+                paint.setColor(dot.getColor());
                 canvas.drawCircle(
                         dot.getCenterX(),
                         dot.getCenterY(),

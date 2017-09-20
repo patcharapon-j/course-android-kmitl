@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -77,22 +78,31 @@ public class DotView extends View implements View.OnLongClickListener{
 
     }
 
+    private final GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+                    listener.onDotViewTouched(
+                            (int)e.getX(),
+                            (int)e.getY());
+            return super.onSingleTapUp(e);
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+            listener.onDotViewLongTouched(
+                    (int)e.getX(),
+                    (int)e.getY());
+            super.onLongPress(e);
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+    });
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_UP:
-                if(!isLongPressed) {
-                    this.listener.onDotViewTouched(
-                            (int)event.getX(),
-                            (int)event.getY());
-                }
-                break;
-            case MotionEvent.ACTION_DOWN:
-                touchxBuffer = (int)event.getX();
-                touchyBuffer = (int)event.getY();
-                break;
-        }
-        isLongPressed = false;
-        return super.onTouchEvent(event);
+        return gestureDetector.onTouchEvent(event);
     }
 }

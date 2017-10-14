@@ -1,5 +1,7 @@
 package com.example.patcharaponjoksamut.mylazyinstagram.Model;
 
+import java.util.ArrayList;
+
 /**
  * Created by patcharaponjoksamut on 14/10/2017 AD.
  */
@@ -11,6 +13,7 @@ public class UserProfile {
     private int following;
     private boolean isFollow;
     private int post;
+    private ArrayList<PostModel> posts;
 
     private String urlProfile;
     private String user;
@@ -69,5 +72,13 @@ public class UserProfile {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public ArrayList<PostModel> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(ArrayList<PostModel> posts) {
+        this.posts = posts;
     }
 }

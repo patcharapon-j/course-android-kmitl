@@ -1,11 +1,19 @@
 package com.example.patcharaponjoksamut.mylazyinstagram.Controller;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -20,14 +28,26 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    private UserProfile userProfile;
+    private int currentDisplayMode = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        setupSpinner();
         getUserProfile("android");
+    }
+
+    private void setupSpinner() {
+        Spinner spinner = findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.account_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     private void getUserProfile(String name) {
@@ -43,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
                 Log.d("Debug", "onResponse:" + response.body());
-                display(response.body());
+                userProfile = response.body();
+                display(userProfile);
+                displayImages(userProfile, currentDisplayMode);
             }
 
             @Override
@@ -71,11 +93,33 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView imageProfile = findViewById(R.id.imageProfile);
         Glide.with(this).load(userProfile.getUrlProfile()).into(imageProfile);
+    }
 
+    private void displayImages(UserProfile userProfile, int item) {
         RecyclerView list = findViewById(R.id.list);
-        list.setLayoutManager(new GridLayoutManager(this, 3));
+        list.setLayoutManager(new GridLayoutManager(this, item));
         PostAdapter adapter = new PostAdapter(this);
         adapter.setData(userProfile.getPosts());
         list.setAdapter(adapter);
+    }
+
+    public void onGridButtonClick(View view) {
+        currentDisplayMode = 3;
+        displayImages(userProfile, currentDisplayMode);
+    }
+
+    public void onListButtonClicked(View view) {
+        currentDisplayMode = 1;
+        displayImages(userProfile, currentDisplayMode);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        getUserProfile((String) adapterView.getItemAtPosition(i));
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

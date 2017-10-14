@@ -21,6 +21,7 @@ import com.example.patcharaponjoksamut.mylazyinstagram.API.Api;
 import com.example.patcharaponjoksamut.mylazyinstagram.Adapter.PostAdapter;
 import com.example.patcharaponjoksamut.mylazyinstagram.Model.UserProfile;
 import com.example.patcharaponjoksamut.mylazyinstagram.R;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -32,11 +33,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private UserProfile userProfile;
     private int currentDisplayMode = 3;
+    private AVLoadingIndicatorView avi;
+    private View overlayView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        overlayView = findViewById(R.id.overlay_container);
+        avi = findViewById(R.id.avi);
+
         setupSpinner();
         getUserProfile("android");
     }
@@ -51,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void getUserProfile(String name) {
+        showActivityIndicator();
         OkHttpClient client = new OkHttpClient.Builder().build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Api.BASE)
@@ -66,11 +74,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 userProfile = response.body();
                 display(userProfile);
                 displayImages(userProfile, currentDisplayMode);
+                hideActivityIndicator();
             }
 
             @Override
             public void onFailure(Call<UserProfile> call, Throwable t) {
                 Log.d("Debug", "onFailure");
+                hideActivityIndicator();
             }
         });
     }
@@ -121,5 +131,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private void showActivityIndicator() {
+        //avi.show();
+        overlayView.setVisibility(View.VISIBLE);
+    }
+
+    private void hideActivityIndicator() {
+        //avi.hide();
+        overlayView.setVisibility(View.INVISIBLE);
     }
 }

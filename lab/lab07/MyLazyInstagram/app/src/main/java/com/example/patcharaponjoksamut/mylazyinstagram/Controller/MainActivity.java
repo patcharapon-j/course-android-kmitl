@@ -1,7 +1,9 @@
-package com.example.patcharaponjoksamut.mylazyinstagram;
+package com.example.patcharaponjoksamut.mylazyinstagram.Controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.patcharaponjoksamut.mylazyinstagram.R;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -146,15 +146,40 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void showActivityIndicator() {
         //avi.show();
+        overlayView.bringToFront();
         overlayView.setVisibility(View.VISIBLE);
     }
 
     private void hideActivityIndicator() {
         //avi.hide();
+        overlayView.bringToFront();
         overlayView.setVisibility(View.INVISIBLE);
     }
 
     public void onFollowBtnPressed(View view) {
+        showActivityIndicator();
+
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Api.BASE)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Api api = retrofit.create(Api.class);
+        api.postProfile(userProfile.getUser(), !userProfile.isFollow()).enqueue(new retrofit2.Callback<UserProfile>() {
+            @Override
+            public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
+                Log.d("Debug", "onResponse:" + response.body());
+                getUserProfile(userProfile.getUser());
+            }
+
+            @Override
+            public void onFailure(Call<UserProfile> call, Throwable t) {
+                Log.d("Debug", "onFailure");
+                hideActivityIndicator();
+            }
+        });
 
     }
 

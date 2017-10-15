@@ -90,13 +90,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         textUser.setText("@" + userProfile.getUser());
 
         TextView textPost = findViewById(R.id.textPost);
-        textPost.setText("Post\n" + userProfile.getPost());
+        textPost.setText(String.valueOf(userProfile.getPost()));
 
         TextView textFollower = findViewById(R.id.textFollower);
-        textFollower.setText("Follower\n" + userProfile.getFollower());
+        textFollower.setText(String.valueOf(userProfile.getFollower()));
 
-        TextView textFollwing = findViewById(R.id.textFollwing);
-        textFollwing.setText("Following\n" + userProfile.getFollowing());
+        TextView textFollwing = findViewById(R.id.textFollowing);
+        textFollwing.setText(String.valueOf(userProfile.getFollowing()));
 
         TextView textBio = findViewById(R.id.textBio);
         textBio.setText(userProfile.getBio());

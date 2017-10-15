@@ -1,6 +1,8 @@
 package com.example.patcharaponjoksamut.mylazyinstagram.Controller;
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private int currentDisplayMode = 3;
     private AVLoadingIndicatorView avi;
     private View overlayView;
+    private Button followBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         overlayView = findViewById(R.id.overlay_container);
         avi = findViewById(R.id.avi);
+        followBtn = findViewById(R.id.followButton);
 
         setupSpinner();
         getUserProfile("android");
@@ -103,6 +108,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         ImageView imageProfile = findViewById(R.id.imageProfile);
         Glide.with(this).load(userProfile.getUrlProfile()).into(imageProfile);
+
+        if(userProfile.isFollow()) {
+            setFollowBtnToFollowed();
+        } else {
+            setFollowBtnToFollow();
+        }
     }
 
     private void displayImages(UserProfile userProfile, int item) {
@@ -141,5 +152,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private void hideActivityIndicator() {
         //avi.hide();
         overlayView.setVisibility(View.INVISIBLE);
+    }
+
+    public void onFollowBtnPressed(View view) {
+
+    }
+
+    private void setFollowBtnToFollowed() {
+        followBtn.setText("Followed");
+        followBtn.setTextColor(Color.WHITE);
+        followBtn.getBackground().setColorFilter(ContextCompat.getColor(this, android.R.color.holo_blue_dark), PorterDuff.Mode.MULTIPLY);
+    }
+
+    private void setFollowBtnToFollow() {
+        followBtn.setText("Follow");
+        followBtn.setTextColor(Color.BLACK);
+        followBtn.getBackground().setColorFilter(ContextCompat.getColor(this, android.R.color.white), PorterDuff.Mode.MULTIPLY);
     }
 }

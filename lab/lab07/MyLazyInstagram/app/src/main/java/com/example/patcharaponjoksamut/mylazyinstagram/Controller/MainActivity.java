@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private AVLoadingIndicatorView avi;
     private View overlayView;
     private Button followBtn;
+    private View rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         overlayView = findViewById(R.id.overlay_container);
         avi = findViewById(R.id.avi);
         followBtn = findViewById(R.id.followButton);
+        rootView = findViewById(R.id.rootView);
 
         setupSpinner();
         getUserProfile("android");
@@ -146,12 +148,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void showActivityIndicator() {
         //avi.show();
+        rootView.setClickable(false);
         overlayView.bringToFront();
         overlayView.setVisibility(View.VISIBLE);
     }
 
     private void hideActivityIndicator() {
         //avi.hide();
+        rootView.setClickable(true);
         overlayView.bringToFront();
         overlayView.setVisibility(View.INVISIBLE);
     }

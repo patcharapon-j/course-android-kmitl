@@ -123,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         list.setLayoutManager(new GridLayoutManager(this, item));
         PostAdapter adapter = new PostAdapter(this);
         adapter.setData(userProfile.getPosts());
+        adapter.setUserProfile(userProfile);
+        adapter.setItem(item);
         list.setAdapter(adapter);
     }
 

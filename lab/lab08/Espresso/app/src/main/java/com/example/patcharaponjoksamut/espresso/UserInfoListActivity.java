@@ -1,6 +1,7 @@
 package com.example.patcharaponjoksamut.espresso;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +10,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,4 +63,10 @@ public class UserInfoListActivity extends AppCompatActivity {
 
     }
 
+    public void onClearListClicked(View view) {
+        UserInfoList suggestSearchList = (UserInfoList) preference.read(UserInfoListActivity.EXTTRA_LIST, UserInfoList.class);
+        suggestSearchList.getUserInfoList().clear();
+        displaySuggestsList(suggestSearchList.getUserInfoList());
+        preference.save(UserInfoListActivity.EXTTRA_LIST, suggestSearchList);
+    }
 }

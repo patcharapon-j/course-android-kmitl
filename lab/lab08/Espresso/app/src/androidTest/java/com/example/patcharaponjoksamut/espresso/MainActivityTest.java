@@ -36,13 +36,13 @@ public class MainActivityTest {
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void casePressedAddWithoutFillingForm() {
+    public void testCase1() {
         onView(withId(R.id.buttonAdded)).perform(click());
         onView(withId(android.R.id.message)).check(matches(withText("Please Enter user info")));
     }
 
     @Test
-    public void casePressedAddFillOnlyAge() {
+    public void testCase2() {
         onView(withId(R.id.editTextAge)).perform(replaceText("20"));
         onView(withId(R.id.buttonAdded)).perform(click());
         onView(withId(android.R.id.message)).check(matches(withText("Please Enter user info")));
@@ -50,13 +50,13 @@ public class MainActivityTest {
     }
 
     @Test
-    public void casePressedGoToListWithoutAddUser() {
+    public void testCase3() {
         onView(withId(R.id.buttonGotoList)).perform(click());
         onView(withId(R.id.textNotFound)).check(matches(withText("Not Found")));
     }
 
     @Test
-    public void casePressedAddFillOnlyName() {
+    public void testCase4() {
         onView(withId(R.id.editTextName)).perform(replaceText("Ying"));
         onView(withId(R.id.buttonAdded)).perform(click());
         onView(withId(android.R.id.message)).check(matches(withText("Please Enter user info")));
@@ -64,11 +64,12 @@ public class MainActivityTest {
     }
 
     @Test
-    public void casePressedAddWilAllInfo() {
+    public void testCase5() {
         onView(withId(R.id.editTextName)).perform(replaceText("Ying"), closeSoftKeyboard());
         onView(withId(R.id.editTextAge)).perform(replaceText("20"), closeSoftKeyboard());
         onView(withId(R.id.buttonAdded)).perform(click());
         onView(withId(R.id.buttonGotoList)).perform(click());
+
 
         onView(withRecyclerView(R.id.list)
                 .atPositionOnView(0, R.id.textName))
@@ -80,19 +81,49 @@ public class MainActivityTest {
     }
 
     @Test
-    public void casePressedAddWithAllInfo2() {
-        onView(withId(R.id.editTextName)).perform(click());
-        onView(withId(R.id.editTextName)).perform(replaceText("Ladarat"), closeSoftKeyboard());
-        onView(withId(R.id.editTextAge)).perform(replaceText("20"), closeSoftKeyboard());
+    public void testCase6() {
+        onView(withId(R.id.editTextName)).perform(replaceText("Somkait"), closeSoftKeyboard());
+        onView(withId(R.id.editTextAge)).perform(replaceText("80"), closeSoftKeyboard());
         onView(withId(R.id.buttonAdded)).perform(click());
         onView(withId(R.id.buttonGotoList)).perform(click());
 
         onView(withRecyclerView(R.id.list)
                 .atPositionOnView(1, R.id.textName))
-                .check(matches(withText("Ladarat")));
+                .check(matches(withText("Somkait")));
         onView(withRecyclerView(R.id.list)
                 .atPositionOnView(1, R.id.textAge))
-                .check(matches(withText("20")));
+                .check(matches(withText("80")));
+    }
+
+    @Test
+    public void testCase7() {
+        onView(withId(R.id.editTextName)).perform(replaceText("Prayoch"), closeSoftKeyboard());
+        onView(withId(R.id.editTextAge)).perform(replaceText("60"), closeSoftKeyboard());
+        onView(withId(R.id.buttonAdded)).perform(click());
+        onView(withId(R.id.buttonGotoList)).perform(click());
+
+        onView(withRecyclerView(R.id.list)
+                .atPositionOnView(2, R.id.textName))
+                .check(matches(withText("Prayoch")));
+        onView(withRecyclerView(R.id.list)
+                .atPositionOnView(2, R.id.textAge))
+                .check(matches(withText("60")));
+    }
+
+    @Test
+    public void testCase8() {
+        onView(withId(R.id.editTextName)).perform(click());
+        onView(withId(R.id.editTextName)).perform(replaceText("Prayoch"), closeSoftKeyboard());
+        onView(withId(R.id.editTextAge)).perform(replaceText("50"), closeSoftKeyboard());
+        onView(withId(R.id.buttonAdded)).perform(click());
+        onView(withId(R.id.buttonGotoList)).perform(click());
+
+        onView(withRecyclerView(R.id.list)
+                .atPositionOnView(3, R.id.textName))
+                .check(matches(withText("Prayoch")));
+        onView(withRecyclerView(R.id.list)
+                .atPositionOnView(3, R.id.textAge))
+                .check(matches(withText("50")));
     }
 
     private static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {

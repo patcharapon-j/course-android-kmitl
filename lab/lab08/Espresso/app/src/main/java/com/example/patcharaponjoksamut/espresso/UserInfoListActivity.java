@@ -60,13 +60,12 @@ public class UserInfoListActivity extends AppCompatActivity {
             adapter.setData(suggestsList);
             adapter.notifyDataSetChanged();
         }
-
     }
 
     public void onClearListClicked(View view) {
         UserInfoList suggestSearchList = (UserInfoList) preference.read(UserInfoListActivity.EXTTRA_LIST, UserInfoList.class);
         suggestSearchList.getUserInfoList().clear();
-        displaySuggestsList(suggestSearchList.getUserInfoList());
-        preference.save(UserInfoListActivity.EXTTRA_LIST, suggestSearchList);
+        displaySuggestsList(new ArrayList<UserInfo>());
+        preference.save(UserInfoListActivity.EXTTRA_LIST, null);
     }
 }

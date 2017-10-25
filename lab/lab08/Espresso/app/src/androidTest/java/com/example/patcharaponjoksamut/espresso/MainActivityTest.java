@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -60,6 +61,42 @@ public class MainActivityTest {
         onView(withId(R.id.buttonAdded)).perform(click());
         onView(withId(android.R.id.message)).check(matches(withText("Please Enter user info")));
         onView(withId(android.R.id.button1)).perform(click());
+    }
+
+    @Test
+    public void casePressedAddWilAllInfo() {
+        onView(withId(R.id.editTextName)).perform(replaceText("Ying"), closeSoftKeyboard());
+        onView(withId(R.id.editTextAge)).perform(replaceText("20"), closeSoftKeyboard());
+        onView(withId(R.id.buttonAdded)).perform(click());
+        onView(withId(R.id.buttonGotoList)).perform(click());
+
+        onView(withRecyclerView(R.id.list)
+                .atPositionOnView(0, R.id.textName))
+                .check(matches(withText("Ying")));
+
+        onView(withRecyclerView(R.id.list)
+                .atPositionOnView(0, R.id.textAge))
+                .check(matches(withText("20")));
+    }
+
+    @Test
+    public void casePressedAddWithAllInfo2() {
+        onView(withId(R.id.editTextName)).perform(click());
+        onView(withId(R.id.editTextName)).perform(replaceText("Ladarat"), closeSoftKeyboard());
+        onView(withId(R.id.editTextAge)).perform(replaceText("20"), closeSoftKeyboard());
+        onView(withId(R.id.buttonAdded)).perform(click());
+        onView(withId(R.id.buttonGotoList)).perform(click());
+
+        onView(withRecyclerView(R.id.list)
+                .atPositionOnView(1, R.id.textName))
+                .check(matches(withText("Ladarat")));
+        onView(withRecyclerView(R.id.list)
+                .atPositionOnView(1, R.id.textAge))
+                .check(matches(withText("20")));
+    }
+
+    private static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
+        return new RecyclerViewMatcher(recyclerViewId);
     }
 
     private static Matcher<View> childAtPosition(

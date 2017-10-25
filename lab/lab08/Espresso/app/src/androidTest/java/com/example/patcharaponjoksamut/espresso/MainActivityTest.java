@@ -1,6 +1,7 @@
 package com.example.patcharaponjoksamut.espresso;
 
 
+import android.os.SystemClock;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -45,6 +46,12 @@ public class MainActivityTest {
         onView(withId(R.id.buttonAdded)).perform(click());
         onView(withId(android.R.id.message)).check(matches(withText("Please Enter user info")));
         onView(withId(android.R.id.button1)).perform(click());
+    }
+
+    @Test
+    public void casePressedGoToListWithoutAddUser() {
+        onView(withId(R.id.buttonGotoList)).perform(click());
+        onView(withId(R.id.textNotFound)).check(matches(withText("Not Found")));
     }
 
     private static Matcher<View> childAtPosition(

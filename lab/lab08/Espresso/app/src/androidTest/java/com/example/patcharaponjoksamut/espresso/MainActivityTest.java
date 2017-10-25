@@ -54,6 +54,14 @@ public class MainActivityTest {
         onView(withId(R.id.textNotFound)).check(matches(withText("Not Found")));
     }
 
+    @Test
+    public void casePressedAddFillOnlyName() {
+        onView(withId(R.id.editTextName)).perform(replaceText("Ying"));
+        onView(withId(R.id.buttonAdded)).perform(click());
+        onView(withId(android.R.id.message)).check(matches(withText("Please Enter user info")));
+        onView(withId(android.R.id.button1)).perform(click());
+    }
+
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 

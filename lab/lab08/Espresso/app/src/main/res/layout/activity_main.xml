@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context="com.project.demorecord.MainActivity">
+    tools:context="com.example.patcharaponjoksamut.espresso.MainActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
         android:text="Name :"/>
 
     <EditText
-        android:id="@+id/editTExtName"
+        android:id="@+id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

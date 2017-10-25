@@ -15,7 +15,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.editTExtName)
+    @BindView(R.id.editTextName)
     EditText editTExtName;
 
     @BindView(R.id.editTextAge)

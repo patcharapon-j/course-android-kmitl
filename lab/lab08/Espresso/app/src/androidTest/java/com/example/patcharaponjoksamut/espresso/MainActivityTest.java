@@ -18,7 +18,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
@@ -31,6 +35,20 @@ import static org.hamcrest.Matchers.allOf;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
+
+    private ArrayList<String> testName = new ArrayList<>(Arrays.asList(
+            "Ying",
+            "Somkait",
+            "Prayoch",
+            "Prayoch"
+    ));
+
+    private ArrayList<String> testAge = new ArrayList<>(Arrays.asList(
+            "20",
+            "80",
+            "60",
+            "50"
+    ));
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
@@ -65,11 +83,13 @@ public class MainActivityTest {
 
     @Test
     public void testCase5() {
-        onView(withId(R.id.editTextName)).perform(replaceText("Ying"), closeSoftKeyboard());
-        onView(withId(R.id.editTextAge)).perform(replaceText("20"), closeSoftKeyboard());
-        onView(withId(R.id.buttonAdded)).perform(click());
-        onView(withId(R.id.buttonGotoList)).perform(click());
 
+        clearOldData();
+        for(int i=0; i<1; i++) {
+            addToList(i);
+        }
+
+        onView(withId(R.id.buttonGotoList)).perform(click());
 
         onView(withRecyclerView(R.id.list)
                 .atPositionOnView(0, R.id.textName))
@@ -82,9 +102,13 @@ public class MainActivityTest {
 
     @Test
     public void testCase6() {
-        onView(withId(R.id.editTextName)).perform(replaceText("Somkait"), closeSoftKeyboard());
-        onView(withId(R.id.editTextAge)).perform(replaceText("80"), closeSoftKeyboard());
-        onView(withId(R.id.buttonAdded)).perform(click());
+
+        clearOldData();
+
+        for(int i=0; i<2; i++) {
+            addToList(i);
+        }
+
         onView(withId(R.id.buttonGotoList)).perform(click());
 
         onView(withRecyclerView(R.id.list)
@@ -97,9 +121,13 @@ public class MainActivityTest {
 
     @Test
     public void testCase7() {
-        onView(withId(R.id.editTextName)).perform(replaceText("Prayoch"), closeSoftKeyboard());
-        onView(withId(R.id.editTextAge)).perform(replaceText("60"), closeSoftKeyboard());
-        onView(withId(R.id.buttonAdded)).perform(click());
+
+        clearOldData();
+
+        for(int i=0; i<3; i++) {
+            addToList(i);
+        }
+
         onView(withId(R.id.buttonGotoList)).perform(click());
 
         onView(withRecyclerView(R.id.list)
@@ -112,10 +140,11 @@ public class MainActivityTest {
 
     @Test
     public void testCase8() {
-        onView(withId(R.id.editTextName)).perform(click());
-        onView(withId(R.id.editTextName)).perform(replaceText("Prayoch"), closeSoftKeyboard());
-        onView(withId(R.id.editTextAge)).perform(replaceText("50"), closeSoftKeyboard());
-        onView(withId(R.id.buttonAdded)).perform(click());
+        clearOldData();
+        for(int i=0; i<4; i++) {
+            addToList(i);
+        }
+
         onView(withId(R.id.buttonGotoList)).perform(click());
 
         onView(withRecyclerView(R.id.list)
@@ -124,6 +153,18 @@ public class MainActivityTest {
         onView(withRecyclerView(R.id.list)
                 .atPositionOnView(3, R.id.textAge))
                 .check(matches(withText("50")));
+    }
+
+    private void clearOldData() {
+        onView(withId(R.id.buttonGotoList)).perform(click());
+        onView(withId(R.id.button)).perform(click());
+        pressBack();
+    }
+
+    private void addToList(int index) {
+        onView(withId(R.id.editTextName)).perform(replaceText(testName.get(index)), closeSoftKeyboard());
+        onView(withId(R.id.editTextAge)).perform(replaceText(testAge.get(index)), closeSoftKeyboard());
+        onView(withId(R.id.buttonAdded)).perform(click());
     }
 
     private static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {

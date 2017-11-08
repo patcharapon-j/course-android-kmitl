@@ -1,5 +1,6 @@
 package com.example.patcharaponjoksamut.moneyflow.Controller;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements TransactionDialog
         updateListView();
     }
 
-    private String formatNumberString(int number) {
+    private String formatNumberString(double number) {
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         numberFormat.setGroupingUsed(true);
 
@@ -58,10 +59,30 @@ public class MainActivity extends AppCompatActivity implements TransactionDialog
 
     private void updateListView() {
         TextView textView = findViewById(R.id.tempTransactionView);
+        TextView balanceTextView = findViewById(R.id.balanceTextView);
+
+        Double sum = 0.0;
+        Double income = 0.0;
+
         String output = "";
         for(Transaction transaction: AppDatabase.getAppDatabase(this).transactionDao().getAll()) {
             output += transaction.getName() + " " + transaction.getAmount()*transaction.getMode();
+            sum += transaction.getAmount()*transaction.getMode();
+            if(transaction.getMode() == 1 ) {
+                income += transaction.getAmount();
+            }
         }
+
         textView.setText(output);
+        balanceTextView.setText(formatNumberString(sum));
+
+        if(sum > income * 0.5) {
+            balanceTextView.setTextColor(Color.GREEN);
+        } else if (sum >= income * 0.25) {
+            balanceTextView.setTextColor(Color.YELLOW);
+        } else {
+            balanceTextView.setTextColor(Color.RED);
+        }
+
     }
 }

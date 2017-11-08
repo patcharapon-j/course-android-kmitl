@@ -3,16 +3,20 @@ package com.example.patcharaponjoksamut.moneyflow.Controller;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.patcharaponjoksamut.moneyflow.Adapter.TransactionViewAdapter;
 import com.example.patcharaponjoksamut.moneyflow.Model.Transaction;
 import com.example.patcharaponjoksamut.moneyflow.R;
 import com.example.patcharaponjoksamut.moneyflow.Utility.AppDatabase;
 import com.example.patcharaponjoksamut.moneyflow.View.TransactionDialogFragment;
 
 import java.text.NumberFormat;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TransactionDialogFragment.TransactionCallbackListener{
 
@@ -64,7 +68,10 @@ public class MainActivity extends AppCompatActivity implements TransactionDialog
         Double income = 0.0;
 
         String output = "";
-        for(Transaction transaction: AppDatabase.getAppDatabase(this).transactionDao().getAll()) {
+
+        List<Transaction> allTransaction = AppDatabase.getAppDatabase(this).transactionDao().getAll();
+
+        for(Transaction transaction: allTransaction) {
             output += transaction.getName() + " " + transaction.getAmount()*transaction.getMode();
             sum += transaction.getAmount()*transaction.getMode();
             if(transaction.getMode() == 1 ) {
@@ -81,6 +88,14 @@ public class MainActivity extends AppCompatActivity implements TransactionDialog
         } else {
             balanceTextView.setTextColor(Color.RED);
         }
+
+        TransactionViewAdapter transactionViewAdapter = new TransactionViewAdapter();
+        transactionViewAdapter.setAllTransaction(allTransaction);
+
+        RecyclerView recyclerView = findViewById(R.id.mainRecyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        recyclerView.setAdapter(transactionViewAdapter);
+
 
     }
 }

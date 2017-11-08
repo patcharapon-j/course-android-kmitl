@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements TransactionDialog
 
     @Override
     public void onAddNewTransaction(int mode, String name, double amount) {
-        Toast.makeText(this, mode + " " + name + " " + amount, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, mode + " " + name + " " + amount, Toast.LENGTH_SHORT).show();
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
         transaction.setMode(mode);
@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements TransactionDialog
     }
 
     private void updateListView() {
-        TextView textView = findViewById(R.id.tempTransactionView);
         TextView balanceTextView = findViewById(R.id.balanceTextView);
 
         Double sum = 0.0;
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements TransactionDialog
             }
         }
 
-        textView.setText(output);
         balanceTextView.setText(formatNumberString(sum));
 
         if(sum > income * 0.5) {

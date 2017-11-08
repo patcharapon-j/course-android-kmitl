@@ -13,14 +13,16 @@ import com.example.patcharaponjoksamut.moneyflow.Adapter.TransactionViewAdapter;
 import com.example.patcharaponjoksamut.moneyflow.Model.Transaction;
 import com.example.patcharaponjoksamut.moneyflow.R;
 import com.example.patcharaponjoksamut.moneyflow.Utility.AppDatabase;
+import com.example.patcharaponjoksamut.moneyflow.View.TransactionDialogEdit;
 import com.example.patcharaponjoksamut.moneyflow.View.TransactionDialogFragment;
 
 import java.text.NumberFormat;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TransactionDialogFragment.TransactionCallbackListener, TransactionViewAdapter.TransactionViewOnClickListener{
+public class MainActivity extends AppCompatActivity implements TransactionDialogFragment.TransactionCallbackListener, TransactionViewAdapter.TransactionViewOnClickListener, TransactionDialogEdit.TransactionEditCallbackListener{
 
     private TransactionDialogFragment transactionDialogFragment;
+    private TransactionDialogEdit transactionDialogEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,32 @@ public class MainActivity extends AppCompatActivity implements TransactionDialog
 
     @Override
     public void onItemClicked(int position) {
-        
+        List<Transaction> allTransaction = AppDatabase.getAppDatabase(this).transactionDao().getAll();
+        Transaction currentTransaction = allTransaction.get(position);
+
+        transactionDialogEdit = new TransactionDialogEdit();
+        transactionDialogEdit.setListener(this);
+        transactionDialogEdit.setupExistingDataField(position, currentTransaction.getMode(), currentTransaction.getName(), currentTransaction.getAmount());
+        transactionDialogEdit.show(getSupportFragmentManager(), "Edit Transaction");
+    }
+
+    @Override
+    public void onEditTransaction(int position, int mode, String name, double amount) {
+        List<Transaction> allTransaction = AppDatabase.getAppDatabase(this).transactionDao().getAll();
+        Transaction currentTransaction = allTransaction.get(position);
+        currentTransaction.setName(name);
+        currentTransaction.setMode(mode);
+        currentTransaction.setAmount(amount);
+
+        updateListView();
+    }
+
+    @Override
+    public void onDeleteTransaction(int position) {
+        List<Transaction> allTransaction = AppDatabase.getAppDatabase(this).transactionDao().getAll();
+        Transaction currentTransaction = allTransaction.get(position);
+        AppDatabase.getAppDatabase(this).transactionDao().delete(currentTransaction);
+
+        updateListView();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.patcharaponjoksamut.moneyflow;
+package com.example.patcharaponjoksamut.moneyflow.View;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,17 +12,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-/**
- * Created by patcharaponjoksamut on 8/11/2017 AD.
- */
+import com.example.patcharaponjoksamut.moneyflow.R;
+
 
 public class TransactionDialogFragment extends DialogFragment {
 
-    interface TransactionCallbackListener {
-        void onAddNewTransaction(int mode, String name, int amount);
+    public interface TransactionCallbackListener {
+        void onAddNewTransaction(int mode, String name, double amount);
     }
 
-    private int mode = 1;
+    private int mode =-1;
     private View view;
     private TransactionCallbackListener listener;
 
@@ -43,7 +42,7 @@ public class TransactionDialogFragment extends DialogFragment {
                         EditText nameEditText = view.findViewById(R.id.nameTextInput);
                         EditText amountEditText = view.findViewById(R.id.amountTextInput);
 
-                        listener.onAddNewTransaction(mode, String.valueOf(nameEditText.getText()), Integer.parseInt(String.valueOf(amountEditText.getText())));
+                        listener.onAddNewTransaction(mode, String.valueOf(nameEditText.getText()), Double.parseDouble(String.valueOf(amountEditText.getText())));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -64,7 +63,7 @@ public class TransactionDialogFragment extends DialogFragment {
         expenseButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.ButtonWhite));
         expenseButton.setTextColor(Color.BLACK);
 
-        mode = 0;
+        mode = 1;
 
     }
 
@@ -77,7 +76,7 @@ public class TransactionDialogFragment extends DialogFragment {
         incomeButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.ButtonWhite));
         incomeButton.setTextColor(Color.BLACK);
 
-        mode = 1;
+        mode = -1;
     }
 
     public void setListener(TransactionCallbackListener listener) {

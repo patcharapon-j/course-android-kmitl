@@ -3,8 +3,11 @@ package com.example.patcharaponjoksamut.moneyflow;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private TransactionDialogFragment transactionDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,7 +16,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onAddButtonPressed(View view) {
-        TransactionDialogFragment transactionDialogFragment = new TransactionDialogFragment();
+        transactionDialogFragment = new TransactionDialogFragment();
         transactionDialogFragment.show(getSupportFragmentManager(), "Add new Transaction");
+    }
+
+    public void onExpenseButtonPressed(View view) {
+        transactionDialogFragment.onExpenseButtonPressed();
+    }
+
+    public void onIncomeButtonPressed(View view) {
+        transactionDialogFragment.onIncomeButtonPressed();
     }
 }

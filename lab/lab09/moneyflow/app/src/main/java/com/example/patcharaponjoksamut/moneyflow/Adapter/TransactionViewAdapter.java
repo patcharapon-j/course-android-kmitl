@@ -2,6 +2,7 @@ package com.example.patcharaponjoksamut.moneyflow.Adapter;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,16 @@ import java.util.List;
 
 public class TransactionViewAdapter extends RecyclerView.Adapter<TransactionViewAdapter.Holder> {
 
+    public interface TransactionViewOnClickListener {
+        void onItemClicked(int position);
+    }
+
     private List<Transaction> allTransaction;
+    private TransactionViewOnClickListener listener;
+
+    public void setListener(TransactionViewOnClickListener listener) {
+        this.listener = listener;
+    }
 
     public void setAllTransaction(List<Transaction> allTransaction) {
         this.allTransaction = allTransaction;
@@ -36,7 +46,7 @@ public class TransactionViewAdapter extends RecyclerView.Adapter<TransactionView
     }
 
     @Override
-    public void onBindViewHolder(Holder holder, int position) {
+    public void onBindViewHolder(Holder holder, final int position) {
         Transaction transaction = allTransaction.get(position);
         holder.amountTextView.setText(String.valueOf(transaction.getAmount()));
         holder.nameTextView.setText(transaction.getName());
@@ -51,6 +61,13 @@ public class TransactionViewAdapter extends RecyclerView.Adapter<TransactionView
             holder.amountTextView.setTextColor(Color.RED);
             holder.modeTextView.setTextColor(Color.RED);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClicked(position);
+            }
+        });
 
     }
 

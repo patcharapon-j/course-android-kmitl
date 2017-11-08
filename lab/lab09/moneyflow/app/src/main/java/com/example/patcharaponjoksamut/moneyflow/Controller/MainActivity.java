@@ -18,7 +18,7 @@ import com.example.patcharaponjoksamut.moneyflow.View.TransactionDialogFragment;
 import java.text.NumberFormat;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TransactionDialogFragment.TransactionCallbackListener{
+public class MainActivity extends AppCompatActivity implements TransactionDialogFragment.TransactionCallbackListener, TransactionViewAdapter.TransactionViewOnClickListener{
 
     private TransactionDialogFragment transactionDialogFragment;
 
@@ -91,11 +91,17 @@ public class MainActivity extends AppCompatActivity implements TransactionDialog
 
         TransactionViewAdapter transactionViewAdapter = new TransactionViewAdapter();
         transactionViewAdapter.setAllTransaction(allTransaction);
+        transactionViewAdapter.setListener(this);
 
         RecyclerView recyclerView = findViewById(R.id.mainRecyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setAdapter(transactionViewAdapter);
 
 
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+        
     }
 }

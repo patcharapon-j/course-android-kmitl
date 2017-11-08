@@ -3,6 +3,7 @@ package com.example.patcharaponjoksamut.moneyflow.View;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -58,9 +59,9 @@ public class TransactionDialogFragment extends DialogFragment {
         Button incomeButton = view.findViewById(R.id.incomeButton);
         Button expenseButton = view.findViewById(R.id.expenseButton);
 
-        incomeButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.ButtonGreen));
+        incomeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#4CAF50")));
         incomeButton.setTextColor(Color.WHITE);
-        expenseButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.ButtonWhite));
+        expenseButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F5F5F5")));
         expenseButton.setTextColor(Color.BLACK);
 
         mode = 1;
@@ -71,9 +72,9 @@ public class TransactionDialogFragment extends DialogFragment {
         Button incomeButton = view.findViewById(R.id.incomeButton);
         Button expenseButton = view.findViewById(R.id.expenseButton);
 
-        expenseButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.ButtonRed));
+        expenseButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#4CAF50")));
         expenseButton.setTextColor(Color.WHITE);
-        incomeButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.ButtonWhite));
+        incomeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F5F5F5")));
         incomeButton.setTextColor(Color.BLACK);
 
         mode = -1;

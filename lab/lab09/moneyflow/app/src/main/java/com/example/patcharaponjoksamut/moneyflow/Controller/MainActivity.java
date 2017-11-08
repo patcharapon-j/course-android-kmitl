@@ -38,11 +38,24 @@ public class MainActivity extends AppCompatActivity implements TransactionDialog
     }
 
     public void onExpenseButtonPressed(View view) {
-        transactionDialogFragment.onExpenseButtonPressed();
+        if(transactionDialogFragment != null) {
+            transactionDialogFragment.onExpenseButtonPressed();
+        }
+
+        if(transactionDialogEdit != null) {
+            transactionDialogEdit.onExpenseButtonPressed();
+        }
+
     }
 
     public void onIncomeButtonPressed(View view) {
-        transactionDialogFragment.onIncomeButtonPressed();
+        if(transactionDialogFragment != null) {
+            transactionDialogFragment.onIncomeButtonPressed();
+        }
+
+        if(transactionDialogEdit != null) {
+            transactionDialogEdit.onIncomeButtonPressed();
+        }
     }
 
     @Override
@@ -120,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements TransactionDialog
         currentTransaction.setName(name);
         currentTransaction.setMode(mode);
         currentTransaction.setAmount(amount);
+
+        AppDatabase.getAppDatabase(this).transactionDao().update(currentTransaction);
 
         updateListView();
     }

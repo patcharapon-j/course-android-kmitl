@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TransactionDialogFragment.TransactionCallbackListener {
 
     private TransactionDialogFragment transactionDialogFragment;
 
@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onAddButtonPressed(View view) {
         transactionDialogFragment = new TransactionDialogFragment();
+        transactionDialogFragment.setListener(this);
         transactionDialogFragment.show(getSupportFragmentManager(), "Add new Transaction");
     }
 
@@ -26,5 +27,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void onIncomeButtonPressed(View view) {
         transactionDialogFragment.onIncomeButtonPressed();
+    }
+
+    @Override
+    public void onAddNewTransaction(int mode, String name, int amount) {
+        Toast.makeText(this, mode + " " + name + " " + amount, Toast.LENGTH_SHORT).show();
     }
 }

@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 /**
@@ -17,8 +18,13 @@ import android.widget.Toast;
 
 public class TransactionDialogFragment extends DialogFragment {
 
+    interface TransactionCallbackListener {
+        void onAddNewTransaction(int mode, String name, int amount);
+    }
+
     private int mode = 1;
     private View view;
+    private TransactionCallbackListener listener;
 
 
     @Override
@@ -34,6 +40,10 @@ public class TransactionDialogFragment extends DialogFragment {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
+                        EditText nameEditText = view.findViewById(R.id.nameTextInput);
+                        EditText amountEditText = view.findViewById(R.id.amountTextInput);
+
+                        listener.onAddNewTransaction(mode, String.valueOf(nameEditText.getText()), Integer.parseInt(String.valueOf(amountEditText.getText())));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -68,5 +78,9 @@ public class TransactionDialogFragment extends DialogFragment {
         incomeButton.setTextColor(Color.BLACK);
 
         mode = 1;
+    }
+
+    public void setListener(TransactionCallbackListener listener) {
+        this.listener = listener;
     }
 }

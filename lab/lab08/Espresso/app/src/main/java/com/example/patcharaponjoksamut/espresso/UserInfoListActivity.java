@@ -46,7 +46,9 @@ public class UserInfoListActivity extends AppCompatActivity {
         if (suggestSearchList != null) {
             displaySuggestsList(suggestSearchList.getUserInfoList());
         } else {
-            displaySuggestsList(new ArrayList<UserInfo>());
+            suggestSearchList = new UserInfoList();
+            suggestSearchList.setUserInfoList(new ArrayList<UserInfo>());
+            displaySuggestsList(suggestSearchList.getUserInfoList());
         }
         preference.save(UserInfoListActivity.EXTTRA_LIST, suggestSearchList);
 

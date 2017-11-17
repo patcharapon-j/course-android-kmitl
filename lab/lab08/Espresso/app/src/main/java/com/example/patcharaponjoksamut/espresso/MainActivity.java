@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         preference = new CommonSharePreference(this);
         userInfoList = (UserInfoList) preference.read(UserInfoListActivity.EXTTRA_LIST, UserInfoList.class);
 
+
     }
 
     private void validate() {

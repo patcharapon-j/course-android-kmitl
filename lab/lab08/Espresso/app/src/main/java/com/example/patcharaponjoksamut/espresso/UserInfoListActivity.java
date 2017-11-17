@@ -48,6 +48,8 @@ public class UserInfoListActivity extends AppCompatActivity {
         } else {
             displaySuggestsList(new ArrayList<UserInfo>());
         }
+        preference.save(UserInfoListActivity.EXTTRA_LIST, suggestSearchList);
+
     }
 
     public void displaySuggestsList(List<UserInfo> suggestsList) {
